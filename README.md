@@ -15,7 +15,7 @@ Responsable: Fabián Calla
 
 -	Promedio de horas semanales por trabajador ocupado: la meritocracia, a través del esfuerzo personal, es un valor defendido en las dinámicas del libre mercado. Sin embargo, esta creencia podría verse mermada por factores que escapan al esfuerzo de una persona. De esta forma, cabe la posibilidad de que el mayor número de horas de trabajo no se traduzca en un aumento del salario, desmintiendo aquella creencia.
 -	Explotación laboral: la Organización Internacional del Trabajo ha establecido mecanismos legales vinculantes a los países respecto a la jornada laboral. De esta forma, exceder a las 48 horas semanales de jornada laboral, puede estar afectando los salarios pues se le exige más trabajo al mismo número de personas con el mismo salario, incrementando la productividad sin incrementar la cantidad de gente empleada. 
--	Desempleo: el desempleo genera una amplia base de trabajadores dispuestos a aceptar trabajos precarios y con reclamos mínimos. De esta forma, los trabajadores empleados son fácilmente reemplazables por otros que estén en una situación económica más complicada. La mayor cantidad de desempleados debe reducir los salarios.  
+-	Tasa de cobertura de la negociación colectiva: se trata de "la proporción de empleados cubiertos por uno o más convenios colectivos". Los sindicatos están reconocidos como organizaciones que buscan equilibrar las relaciones desiguales entre empleador y empleado. Por ello, su intervención en los intereses salariales de los trabajadores puede tener un imapcto en la fijación de estos. 
 
 Responsable:Mirka Prieto 
 
