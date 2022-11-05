@@ -1,0 +1,489 @@
+---
+title: "Limpieza"
+author: "Laetitia Onofre, Fabian Calla, Mirka Prieto"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+**APERTURA DE LAS VARIABLES**
+
+Laetitia:
+
+**Variable dependiente: Promedio salarial**
+```{r}
+library(rio)
+lkPS=("https://docs.google.com/spreadsheets/d/e/2PACX-1vSXZsS8_Zf6ZFR8hK7fu6u5YaW2yTuccH-llmUAkODy_6s6mttsP7qG4e8NGp37zctBArS9XoMm_a1w/pub?output=csv")
+dataps=read.csv(lkPS)
+```
+
+**Indice de Costo de Vida**
+```{r}
+library(rio)
+lkICV=("https://docs.google.com/spreadsheets/d/e/2PACX-1vRsENJFC7m3L0qMpNeOP4i8rFagHVfQ_Dz03yA7iIuWhXIJeByctS1jTDQmq2WczUOhKV3PoGVBqqai/pub?output=csv")
+dataICV=read.csv(lkICV)
+```
+
+**Porcentaje de Inflación:**
+```{r}
+library(rio)
+lkinf=("https://docs.google.com/spreadsheets/d/e/2PACX-1vT3f5vcBfSBQ4ZZHMLTNWsJr9ZwW0CquvWnc7uzoc1mqtz2EhvUjC97vGgVxay3xqQBHChSTyt_CjKe/pub?output=csv")
+datainf=read.csv(lkinf)
+```
+
+**Porcentaje de mujeres que trabajan**
+```{r}
+lkMT=("https://docs.google.com/spreadsheets/d/e/2PACX-1vSCwaV2QDCl8KNEp36TWcbREfMrFClczGH4bbfhpQWVb4YkltYqnh5G2Asl1MPbz-800SJAfBXI1dx6/pub?output=csv")
+dataMT=read.csv(lkMT)
+```
+
+Mirka: 
+
+**Alfabetización**
+```{r}
+alfabe=("https://docs.google.com/spreadsheets/d/e/2PACX-1vSjQR6a9sOdMSY8ffr1HfdaDNV1QbmX6kMiOUuqbUoRbvxbLQrQQOm3wIHin33d0g/pub?output=csv")
+alfabe=read.csv(alfabe)
+```
+
+**Salario minimo interprofesional**
+```{r}
+smip1=("https://docs.google.com/spreadsheets/d/e/2PACX-1vSukxmtG2w1PQVV_VxMyb6ZPmrY8TRNa89daLSHjfmhjZPldpN2lOhRJ-MDs4UI7cZWCnh603xHalNi/pub?output=csv")
+smip1=read.csv(smip1)
+```
+
+**Brecha**
+```{r}
+brechapo=("https://docs.google.com/spreadsheets/d/e/2PACX-1vR3UYXB5ZQwIe_ONT8WN42WV7MjmPaQ4s0KEElQ4CCYJkg3ffsm_hrxnzD987YWSpyzO0iVlGFMnyY-/pub?output=csv")
+brechapo=read.csv(brechapo)
+```
+
+Fabián: 
+
+Variable 1)  Average hours per week per employed person
+Variable 2)  Share of employed working 49 or more hours per week 
+
+```{r}
+library(rio)
+link1=("https://docs.google.com/spreadsheets/d/e/2PACX-1vR4ssMc8ug3KT_geLXhhq6UozFpbeayf0Zqx0TfIQysB62W54K9osfhFqvpeq4GwE83BswMga33OB65/pub?gid=0&single=true&output=csv")
+df=read.csv(link1)
+```
+
+Variable 3) Collective bargaining coverage rates around the world
+
+```{r}
+library(rio)
+link2=("https://docs.google.com/spreadsheets/d/e/2PACX-1vSXUA3IVlkKaWiWY9WP-8V0U0UZHKUi-TIHOFIJol-i4QEuXgJao6upiMLBnmQDEWMnnrV6JR1EBy7k/pub?output=csv")
+df2=read.csv(link2)
+```
+
+
+**LIMPIEZA DE LA DATA**
+
+**Laetitia**
+
+- Promedio salarial: 
+
+Eliminamos las columnas innecesarias: 
+```{r}
+dataps[,c(1:2)]=NULL
+```
+
+```{r}
+dataps[,c(3)]=NULL
+```
+
+Cambiamos los nombres de las colomnas restantes
+```{r}
+colnames(dataps) = c("Pais", "PS")
+```
+
+Eliminamos "dolares"
+```{r}
+library(readr)
+library(stringr)
+library(magrittr)
+dataps$PS = substr(dataps$PS,star=1,stop=4)
+```
+
+Vemos la estructura y cambiamos la variable a numérica
+```{r}
+str(dataps)
+dataps$PS = as.numeric(dataps$PS)
+str(dataps)
+```
+
+- ICV:
+
+Eliminamos las columnas que no necesitamos
+```{r}
+dataICV[,c(4:5 )]=NULL
+dataICV[,c(1)]=NULL
+```
+
+Cambiamos los nombres:
+```{r}
+colnames(dataICV) = c("Pais", "ICV")
+```
+
+Cambiamos los nombres de los países necesarios
+```{r}
+dataICV[dataICV$Pais=="EE.UU.",'Pais']= "Estados Unidos"
+dataICV[dataICV$Pais=="Emiratos Árabes",'Pais']= "Emiratos Arabes Unidos"
+dataICV[dataICV$Pais=="Katar",'Pais']= "Qatar"
+dataICV[dataICV$Pais=="Iraq",'Pais']= "Irak"
+```
+
+
+- Porcentaje de inflación
+
+Eliminamos columnas innecesarias
+```{r}
+datainf[,c(1:2)]=NULL
+datainf[,c(4)]=NULL
+```
+
+```{r}
+datainf[,c(2)]=NULL
+```
+
+Cambiamos los nombres:
+```{r}
+colnames(datainf) = c("Pais", "INF")
+```
+
+Eliminar los (%)
+
+```{r}
+library(stringr)
+str_extract_all(datainf$INF, pattern = "(\\d+\\.*\\d*)(?=\\%)")
+```
+
+```{r}
+PATRON="(\\-*\\d+\\.*\\d*)(?=\\%)"
+COLSUCIA=datainf$INF
+
+#Hacemos otra columna
+datainf$INF=str_extract_all(string= COLSUCIA,
+                            pattern = PATRON,
+                            simplify = T)[,1]
+```
+
+Vemos la estructura, cambiamos a numérica y reemplazamos la "," por ".":
+```{r}
+str(datainf)
+datainf$INF = as.numeric(gsub(",", ".", datainf$INF))
+```
+
+Cambiamos los nombres de los países necesarios
+```{r}
+datainf[datainf$Pais=="Lao",'Pais']= "Laos"
+```
+
+
+- Porcentaje de mujeres que trabajan
+
+Eliminamos columnas innecesarias
+```{r}
+dataMT[,c(1)]=NULL
+dataMT[,c(3:5)]=NULL
+```
+
+Cambiamos los nombres
+```{r}
+colnames(dataMT) = c("Pais", "MT")
+```
+
+Vemos la estructura
+```{r}
+str(dataMT)
+```
+
+Cambiamos los nombres de los países necesarios
+```{r}
+dataMT[dataMT$Pais=="Republica Popular China",'Pais']= "China"
+dataMT[dataMT$Pais=="EE.UU.",'Pais']= "Estados Unidos"
+dataMT[dataMT$Pais=="Katar",'Pais']= "Qatar"
+```
+
+
+**Mirka**
+
+- Tasa de Alfabetización
+
+Vemos la estructura
+```{r}
+str(alfabe)
+```
+
+Eliminamos columnas innecesarias
+```{r}
+alfabe[,c(1)]=NULL
+alfabe[,c(3:63)]=NULL
+alfabe[,c(2)]=NULL
+alfabe[,c(3,4)]=NULL
+```
+```{r}
+row.names(alfabe)=NULL
+```
+
+Eliminamos los espacios 
+```{r}
+names(alfabe)=gsub(" ","",names(alfabe))
+```
+
+Cambiamos los nombres 
+```{r}
+colnames(alfabe) = c("Pais", "Tasa_alfabetizacion")
+```
+
+```{r}
+head(alfabe)
+```
+
+```{r}
+tail(alfabe)
+```
+
+Cambiamos los nombres de los países 
+```{r}
+alfabe[alfabe$Pais=="Iraq",'Pais']= "Irak"
+alfabe[alfabe$Pais=="Zimbabwe",'Pais']= "Zimbabue"
+alfabe[alfabe$Pais=="Republica de Moldova",'Pais']= "Moldavia"
+
+```
+
+- Salario Minimo interprofesional
+
+Eliminamos columnas innecesarias
+```{r}
+smip1[,c(1)]=NULL
+smip1[,c(2:4)]=NULL
+smip1[,c(3)]=NULL
+```
+
+```{r}
+row.names(smip1)=NULL
+```
+
+Eliminamos los espacios
+```{r}
+names(smip1)=gsub(" ","",names(smip1))
+```
+
+Cambiamos los nombres de las columnas
+```{r}
+colnames(smip1) = c("Pais", "salario_min")
+```
+
+Cambiaoms los nombres de los paises que esten escritos de diferente forma
+
+```{r}
+smip1[smip1$Pais=="Fiyi",'Pais']= "Fiji"
+smip1[smip1$Pais=="Banglades",'Pais']= "Bangladesh"
+```
+
+Cambiamos la variable a numérica
+```{r}
+smip1$salario_min=as.numeric(smip1$salario_min)
+```
+
+- Brecha
+
+Eliminamos las columnas innecesarias
+```{r}
+brechapo[,c(1)]=NULL
+brechapo[,c(3:63)]=NULL
+brechapo[,c(2)]=NULL
+brechapo[,c(3,4)]=NULL
+```
+
+```{r}
+row.names(brechapo)=NULL
+```
+
+Eliminamos los espacios
+```{r}
+names(brechapo)=gsub(" ","",names(brechapo))
+```
+
+Cambiamos los nombres de las columnas
+```{r}
+colnames(brechapo) = c("Pais", "brecha")
+```
+
+```{r}
+head(brechapo)
+```
+
+```{r}
+tail(brechapo)
+```
+
+Cambiamos los nombres de los datos que estan escritos de diferente forma
+```{r}
+brechapo[brechapo$Pais=="Kenya",'Pais']= "Kenia"
+brechapo[brechapo$Pais=="Zimbabwe",'Pais']= "Zimbabue"
+brechapo[brechapo$Pais=="Republica de Moldova",'Pais']= "Moldavia"
+```
+
+Cambiamos la variable a numérica
+```{r}
+brechapo$brecha=as.numeric(brechapo$brecha)
+```
+
+**Fabián**
+
+Ambos manejan la misma terminología para referirse a los países por lo que no hay dificultad en ello para juntarlas para hacer el Merge. Se tradujeron los 156 al español para poder juntarlo con las bases de las compañeras. 
+
+```{r}
+dataF=merge(df,df2)
+```
+
+Hasta ahí, los nombres de la variables estaban en inglés y tenían varias palabras. Para porder trabajar con ellas, se cambia de nombre. 
+
+```{r}
+names (dataF) = c("Pais", "horassemana", "explotacion ", "negocole")
+names (dataF)
+```
+
+
+Identificamos los países que difieren con la base de datos que tiene Promedio Salaria (PS) y cambiamos los nombres correspondientes
+```{r}
+#Con este código identificamos los casos comúnes
+commonID= intersect(dataps$Pais,dataF$Pais) 
+#Con este código pedimos que nos muestren los que NO son iguales.
+dataF[!dataF$Pais %in% commonID,]
+```
+
+Los nombres están en español pero contienen acentos y nombres completos de distintos países. 
+
+```{r}
+dataF[dataF$Pais=="Afganistán",'Pais']= "Afganistan"
+dataF[dataF$Pais=="Azerbaiyán",'Pais']= "Azerbaiyan"
+dataF[dataF$Pais=="Bélgica",'Pais']= "Belgica"
+dataF[dataF$Pais=="Canadá",'Pais']= "Canada"
+dataF[dataF$Pais=="Benín",'Pais']= "Benin"
+dataF[dataF$Pais=="Canadá",'Pais']= "Canada"
+dataF[dataF$Pais=="Corea, república de",'Pais']= "Corea del Sur"
+dataF[dataF$Pais=="Etiopía",'Pais']= "Etiopia"
+dataF[dataF$Pais=="Federación Rusa",'Pais']= "Rusia"
+```
+
+```{r}
+dataF[dataF$Pais=="Hungría",'Pais']= "Hungria"
+dataF[dataF$Pais=="Irán (República Islámica de",'Pais']= "Iran" #
+dataF[dataF$Pais=="Japón",'Pais']= "Japon"
+dataF[dataF$Pais=="Canadá",'Pais']= "Canada"
+dataF[dataF$Pais=="Jordán",'Pais']= "Jordania"
+dataF[dataF$Pais=="Katar",'Pais']= "Qatar"
+dataF[dataF$Pais=="letonia",'Pais']= "Letonia"
+dataF[dataF$Pais=="Líbano",'Pais']= "Libano"
+dataF[dataF$Pais=="luxemburgo",'Pais']= "Luxemburgo"
+```
+
+
+```{r}
+dataF[dataF$Pais=="Malí",'Pais']= "Mali"
+dataF[dataF$Pais=="México",'Pais']= "Mexico" #
+dataF[dataF$Pais=="Moldavia, República de",'Pais']= "Moldavia"
+dataF[dataF$Pais=="Níger",'Pais']= "Nigeria"
+dataF[dataF$Pais=="Países Bajos",'Pais']= "Paises Bajos"
+dataF[dataF$Pais=="Pakistán",'Pais']= "Pakistan"
+dataF[dataF$Pais=="Panamá",'Pais']= "Panama"
+dataF[dataF$Pais=="Perú",'Pais']= "Peru"
+dataF[dataF$Pais=="República Democrática Popular Lao",'Pais']= "Laos"
+```
+
+```{r}
+dataF[dataF$Pais=="República Dominicana",'Pais']= "Republica Dominicana"
+dataF[dataF$Pais=="Sudáfrica",'Pais']= "Sudafrica" #
+dataF[dataF$Pais=="Tanzanía, República Unida de",'Pais']= "Tanzania"
+dataF[dataF$Pais=="Turquía",'Pais']= "Turquia"
+```
+
+
+Generaré un archivo con mis tres variables para subirlo a la nube y trabajar con ese (mayor facilidad). Para el merge final, se usarrá esa data llamada (dataA)
+```{r}
+library(openxlsx)
+write.xlsx(dataF, "Datadefabian")
+```
+
+
+Data final: llamamos a la data (dataA)
+```{r}
+library(rio)
+linkA=("https://docs.google.com/spreadsheets/d/e/2PACX-1vS_-tVAU_ILh4f4Z928pzfMC_8g3UuhEe1mxR3ZOjtwLqZZQy9kOwEg_AZdbFsdGir_9YMTafpDF6ZV/pub?output=csv")
+dataA=read.csv(linkA)
+```
+
+**MERGE**
+
+**Laetitia**
+
+```{r}
+data=merge(dataps, dataICV, all.x = TRUE)
+data2=merge(data, datainf, all.x = TRUE)
+data3=merge(data2, dataMT, all.x = TRUE)
+```
+
+```{r}
+library(dplyr)
+```
+
+```{r}
+data3[!complete.cases(data3),]
+```
+
+```{r}
+data3 <- na.omit(data3)
+```
+
+
+**Mirka**
+
+```{r}
+m1=merge(alfabe, smip1, all.x = TRUE)
+m2=merge(m1, brechapo, all.x = TRUE)
+```
+
+```{r}
+m2[!complete.cases(m2),]
+```
+
+
+```{r}
+m2 <-na.omit(m2)
+```
+
+**Todos**
+
+
+```{r}
+BD=merge(data3, m2, all.x = TRUE) #CON LA DATA DE LAETITIA Y MIRKA PRIMERO
+BD2=merge(BD, dataA, all.x = TRUE) #AGREGAMOS LA DATA DE FABIÁN
+```
+
+```{r}
+BDfinal=merge(BD2, dataps, all.x = TRUE) #AGREGAMOS DATAPS, DATA DE LA VARIABLE DEPENDIENTE
+```
+
+*LA DATA FINAL CON LA QUE VAMOS A TRABAJAR*
+```{r}
+BDfinal <- na.omit(BDfinal) 
+```
+
+```{r}
+row.names(BDfinal)= NULL
+```
+
+#**EXPORTAMOS LA DATA FINAL**
+Cerramos el proceso de limpieza, exportando la data como csv.
+```{r}
+library(rio)
+#export(BDfinal, "BDfinal.csv.") #no entiendo esto, como lo exportamos
+```
+
+ 
