@@ -24,21 +24,16 @@ Responsable:Mirka Prieto
 -	Justificación: Se ha considerado a la variable Brecha pobreza como variable independiente y se busca averiguar si el que en un país haya un alto indice de brecha pobreza impacta en el salario promedio, es decir si a mayor brecha pobreza hay un menor salario promedio o viceversa. 
 Link del Brecha pobreza: https://docs.google.com/spreadsheets/d/e/2PACX-1vTVAcZtQtKqm-jX0v_g02X3Duxwjz04tx5TSNDT5r-mcjgo-crKQL9fpYkcN9CdKA/pub?gid=529196757&single=true&output=csv
 
-- Variable:  Ayuda Oficial al Desarrollo (ODA) neta recibida (% del INB)
-- Base de datos: Banco Mundial 2000 - 2021
-- Justificación: Perú es una país de renta media que recibe transferencias monetarias, ya sea a través de préstamos u otros, de parte de la Ayuda Oficial al Desarrollo para enfrentar problemas como la desigualdad y pobreza, por lo que, con esta variable se desea saber si la ODA tiene impacto en el incremento de salarios ya que la ODA busca promover el desarrollo social y económico, creando oportunidades para las y los peruanos de mejorar sus condiciones de vida. 
-- Fuente: Banco Mundial - base de datos 
-- Link de Ayuda Oficial al Desarrollo (ODA) neta recibida (% del INB):
-https://docs.google.com/spreadsheets/d/e/2PACX-1vSoiQw30_QCIxnEbNFdsZg1NfmgV0dNRU-pWsKI54BZZJBms0R2I8scMBqI3GYOCQ/pubhtml  
-
-
--	Variable: Porcentaje de alfabetización total personas de 15 años a más 
+- Variable: Porcentaje de alfabetización total personas de 15 años a más 
 -	Base de datos: Banco Mundial 2000 - 2021 (BM - Alfabetizacion)
 -	Justificación: Se ha decidido utilizar esta variable ya que las mujeres son quienes, desde la niñez,  empiezan a realizar labores domésticas en el hogar en comparación a los varones, esto impacta en las posibilidades de acceder y continuar con su educación; por ello, con esta variable se quiere saber si la alfabetización de las personas de 15 años a más impacta en el promedio salarial de los países, queremos saber si mayor alfabetización, hay un mayor salario promedio y viceversa. 
 -	Fuente: Instituto de Estadística de la Organización de las Naciones Unidas para la Educación, la Ciencia y la Cultura ( UNESCO )
 Link de la Base de datos: https://datos.bancomundial.org/indicator/SE.ADT.LITR.ZS?view=map 
 Link de csv: https://docs.google.com/spreadsheets/d/e/2PACX-1vRJ9m9VdBXvIDmAVLYhV2YsZiWu6yiZaq8168mdexF_lXqdi1sLptA6fsoYkLv0ig/pub?gid=648940652&single=true&output=csv
-
+- Variable: Salario Mínimo Interprofesional 
+- Base de datos: Datos macro 
+- Justificación: Se ha considerado a la variable Salario Mínimo Interprofesional como variable independiente, se utilizarán los datos del salario mínimo en su conversión en dólares como unidad de medida y se busca averiguar cuál es el impacto del salario mínimo en el salario promedio.
+en el salario promedio ya que el salario mínimo determina la remuneración  mínima de un trabajador para que este pueda
 Laetitia:
 
 - Costo de vida: 
