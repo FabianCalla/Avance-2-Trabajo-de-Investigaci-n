@@ -34,6 +34,7 @@ Link de csv: https://docs.google.com/spreadsheets/d/e/2PACX-1vRJ9m9VdBXvIDmAVLYh
 - Base de datos: Datos macro 
 - Justificación: Se ha considerado a la variable Salario Mínimo Interprofesional como variable independiente, se utilizarán los datos del salario mínimo en su conversión en dólares como unidad de medida y se busca averiguar cuál es el impacto del salario mínimo en el salario promedio.
 en el salario promedio ya que el salario mínimo determina la remuneración  mínima de un trabajador para que este pueda
+-https://docs.google.com/spreadsheets/d/1wuGAF2uD4m-m1cskG5dpe5bDU7l7Qu-oRX5h9G-FJDw/edit?usp=drivesdk
 Laetitia:
 
 - Costo de vida: 
