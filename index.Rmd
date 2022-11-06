@@ -1,0 +1,186 @@
+---
+title: "INDEX LAE"
+author: "Laetitia Onofre"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+El presente trabajo de investigación analiza los factores que pueden impactar en el Promedio Salarial de un país. Se sostiene que los factores económicos como: Inflación, Brecha de pobreza, Salario mínimo, Indice Costo de vida  y sociales como: Tasa de Alfabetizacion, horas semanales,mujeres que trabajan son relevantes para esta investigación.
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Llamamos la data (se llamará BDfinal)
+
+
+```{r}
+library(rio)
+lkXLSX="https://github.com/FabianCalla/Avance-2-Trabajo-de-Investigaci-n/blob/main/BDfinal1.xlsx?raw=true"
+BDfinal=import(lkXLSX)
+```
+
+
+*REGRESIÓN LINEAL**
+
+**Laetitia**
+
+```{r}
+modelo1 = lm(PS~ICV+INF+MT, BDfinal)
+summary(modelo1)
+```
+Interpretación: 
+
+Las variables que son significativas son la de ICV, con un 4.29e-15 e INF con 0.000312 ya que muestran resultados menores a 0.05. Además, se observa que Este modelo2 solo explica un 54%. 
+
+**Mirka**
+
+```{r}
+modelo2 = lm(PS~Tasa_alfabetizacion+salario_min+brecha,BDfinal)
+summary(modelo2)
+```
+Segun el pvalor, este es un modelo valido. Se explica en el 73% y exhibe dos valores que influyen significativamente sobre la dependiente. El aumento en un punto de la tasa de alfabetización, incrementa en 19.35 dolares el promedio salarial. Asimismo, El aumento en un punto del salario mínimo, aumenta en un punto el promedio salarial. 
+
+
+**Fabián**
+
+```{r}
+modelo3= lm(PS~horassemana+negocole+explotacion, BDfinal)
+summary(modelo3)
+```
+
+- El p-valor nos indica que es un modelo válido
+
+- Pero este se está explicando en un 15%
+
+- La proporción de trabajadores ocupados más de 49 horas semanales (en contravensión a los lineamientos de la OIT) y el promedio de horas laborales efectivas en el país no explican la dependiente (salario), pero la proporción de empleados cubiertos por uno o mas convenios colectivos sí. La relación indica que el aumento de un punto de esa proporción, estaría aumentando los salarios en 10.40 dólares.
+
+
+**comparación de los 3 modelos**
+
+```{r}
+library(stargazer)
+library(jtools)
+stargazer(modelo1,modelo2,modelo3, type ="text")
+```
+En comparación, vemos que el modelo 2 está explicando mejor la dependiente con un 73% en el r2 ajustado. 
+
+
+Regresión con las 9 variables independientes: 
+
+```{r}
+modelo4= lm(PS~horassemana+negocole+explotacion+Tasa_alfabetizacion+salario_min+brecha+ICV+INF+MT, BDfinal)
+summary(modelo4)
+```
+- El p-valor nos indica que es un modelo válido
+
+- Este se está explicando en un 75% mejor que todos los modelos anteriores
+
+- Existen 3 variables que influyen en la dependiente: 
+
+En primer lugar, el aumento en un punto respecto al promedio de las horas semanales estaría aumentando en 60.40 el promedio salarial, sin embargo, es la que menos explica la dependeinte. 
+
+El aumento en un punto de la taza de alfabetización estaría aumentando en 21 puntos el promedio salarial, este se explca mejor con 4.59e-05 en el Pr
+
+El aumento en un punto del salario minimo interprofesional, está aumentando en 1.70 el promedio salarial. 
+
+
+**ANÁLISIS FACTORIAL EXPLORATORIO**
+
+1. Subsetear la data
+```{r}
+dontselect=c("Pais", "PS")
+select=setdiff(names(BDfinal), dontselect)
+DL=BDfinal[,select]
+```
+2.Calculo matriz de correlación
+```{r}
+library(polycor)
+corL=polycor::hetcor(DL)$correlations
+```
+3.Explorar correlaciones
+```{r}
+library(ggcorrplot)
+ggcorrplot(corL)
+```
+Interpretación del modelo: 
+
+Al observar el gráfico, notamos que hay bloques que no presentan un alto nivel de correlación. Por ejemplo, horas de trabajo y porcentaje de mujeres que trabajan. Sin embargo, hay variables como "salario minimo" e "Indice de costo de vida (icv)" que tienen mayor nivel de correlación en relación al resto. 
+
+4.Ver si datos dejan factorizar
+```{r}
+library(psych)
+psych::KMO(corL) 
+```
+
+El overall es 0.63 por lo cual, aun estamos dentro del valor adecuado para un análisis factorial. 
+
+5.Ver si la matriz de correlaciones es adecuada
+  *Hnula: Matriz identidad
+```{r}
+cortest.bartlett(corL,n=nrow(DL))$p.value>0.05
+```
+  
+  * Hnula: Matriz singular (debe salir falsa)
+```{r}
+library(matrixcalc)
+
+is.singular.matrix(corL)
+```
+
+Vemos que ambos resultado son False y podemos continuar
+
+6. Aquí vemos en cuántos factores se puede redimensionar la data
+```{r}
+fa.parallel(DL, fa = 'fa',correct = T,plot = F)
+```
+Entonces, vemos que en este caso se sugiere 3 como número de factor (de 9, se pueden represtnar en 3). 
+
+7. Ahora redimensionamos a un menor numero de factores: 
+```{r}
+library(GPArotation)
+resL <- fa(DL,
+            nfactors = 3,
+            cor = 'mixed',
+            rotate = "varimax",
+            fm="minres")
+print(resL$loadings)
+```
+
+
+```{r}
+print(resL$loadings,cutoff = 0.5)
+```
+
+```{r}
+fa.diagram(resL,main = "Resultados del EFA")
+```
+notamos que todas superan el 0.5 salvo negocole
+
+```{r}
+print(resL$loadings,cutoff = 0.5)
+```
+La varianza acumulada de 0.56; esto significa que hemos recuperado el 56 de información.
+
+8. Evaluamos qué variables aportaron más a los factores
+```{r}
+sort(resL$communality)
+```
+**En este caso, vemos que el que más aporta es ICV** el qu emenos aporta el Indice de Inflación. 
+
+- ¿Qué variables contribuyen a más de un factor?
+
+Complejidad:
+```{r}
+sort(resL$complexity)
+```
+En este caso, nos quedamos con la que se encuentre más cercano al 1: ICV. 
+
+
+9. Valores proyectados (resumen)
+```{r}
+library(magrittr)
+as.data.frame(resL$scores)%>%head()
+```
+
+
